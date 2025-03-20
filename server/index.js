@@ -1,18 +1,30 @@
 const express = require('express');
 const app = express();
-const {StatusCodes} = require('http-status-codes');
+const mariadb = require('mariadb');
 
-const port = process.env.PORT || 8080;
+require('dotenv').config({path:`.env.${process.env.NODE_ENV|| 'dev'}`});
+
+const pool = mariadb.createPool({
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    user: process.env.DB_USER,
+    password: process.env.DB_PW,
+    database: process.env.DB_NAME,
+    connectionLimit: 5
+});
+
+const port = 8080;
 app.listen(port);
 
-app.get('/health', (req, res) => {
-    res.status(StatusCodes.OK).end('OK');
-})
+app.get('/test', (req, res) => {
+    pool.getConnection().then(conn => {
+        conn.query(`SELECT * FROM USER`).then(result => {
+            console.log(result);
+        }).catch(err => console.log(err));
+        conn.end()
 
-app.get('/error', (req, res) => {
-    res.status(StatusCodes.INTERNAL_SERVER_ERROR).end();
-})
-
-app.get('/not-found', (req, res) => {
-    res.status(StatusCodes.NOT_FOUND).end();
+    }).catch(err => {
+        console.log(err);
+    })
+    res.end();
 })
