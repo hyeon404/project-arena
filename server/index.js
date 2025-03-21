@@ -3,7 +3,7 @@ const app = express();
 const cors = require('cors');
 const router = express.Router();
 
-const auth = require('./controller/auth');
+const auth = require('./controllers/auth');
 
 require('dotenv').config({path:`.env.${process.env.NODE_ENV|| 'dev'}`});
 const corsOptions = {
