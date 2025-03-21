@@ -17,10 +17,9 @@ function AuthView() {
         console.log(process.env.REACT_APP_SERVER_HOST)
 
         axios.post(`${process.env.REACT_APP_SERVER_HOST}${API.register}`, {
-            params: {
-                id: regId,
-                password: regPassword
-            },
+            id: regId,
+            password: regPassword
+        }, {
             headers: {
                 'Content-Type': 'application/json'
             }
