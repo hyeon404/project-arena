@@ -13,35 +13,27 @@ const pool = mariadb.createPool({
     connectionLimit: 5
 });
 
-function select(query, ...args) {
-    let conn;
-
-    return pool.getConnection().then(connection => {
-        conn = connection;
-        return conn.query(query, args);
-    }).then(rows => {
-        return rows;
-    }).catch(err => {
-        logger.error(err);
-    }).finally(() => {
-        if (conn) conn.release();
-    })
-}
-
-function selectOne(query, ...args) {
-    return select(query, args).then(rows => {
-        return rows[0];
-    })
-}
-
-function getCount(query, ...args) {
-    return select(query, args).then(rows => {
+const method = {
+    async select(query, ...args) {
+        let conn;
         try {
-            return Object.values(rows[0])[0];
+            conn = await pool.getConnection();
+            return await conn.query(query, args);
         } catch (err) {
-            return -1;
+            logger.error(err);
+            logger.error(err.stack);
+        } finally {
+            if( conn ) conn.release()
         }
-    })
+    },
+
+    async selectOne(query, ...args) {
+        return await this.select(query, args)[0];
+    },
+
+    async getCount(query, ...args) {
+        return Object.values(await this.select(query, args)[0])[0];
+    }
 }
 
-module.exports = {select, getCount};
+module.exports = method
