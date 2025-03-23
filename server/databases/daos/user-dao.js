@@ -1,9 +1,11 @@
 const db = require('../query-templates/maria-query-template')
 const logger = require('../../utils/logger')
 
+const userDto = require('../../models/dtos/user-dto')
+
 const userDao = {
     async existUser(id) {
-        return Number(await db.getCount('select count(1) from USER where ID=?', id)) > 0;
+        return Number(await db.getCount('SELECT COUNT(1) FROM USER WHERE ID=?', id)) > 0;
     },
 
     async nextVal() {
@@ -11,8 +13,13 @@ const userDao = {
     },
 
     async createUser({id, password}, newSeq) {
-        const query = "INSERT INTO USER(seq, uid, id, PASSWORD) VALUES (?, concat(DATE_FORMAT(NOW(), '%d%m%i%s'), LPAD(?%1000, 3, '0')), ?, ?)";
+        const query = "INSERT INTO USER(SEQ, UID, ID, PASSWORD) VALUES (?, CONCAT(DATE_FORMAT(NOW(), '%d%m%i%s'), LPAD(?%1000, 3, '0')), ?, ?)";
         return await db.insert(query, newSeq.toString(), newSeq.toString(), id, password);
+    },
+
+    async getUser({id, password}) {
+        const query = "SELECT UID FROM USER WHERE ID=? AND PASSWORD=?";
+        return new userDto(await db.selectOne(query, id, password));
     }
 }
 

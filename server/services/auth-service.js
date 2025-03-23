@@ -1,18 +1,27 @@
-const userRepo = require('../databases/daos/user-dao')
+const logger = require('../utils/logger');
+const userDao = require('../databases/daos/user-dao')
 
 const authService = {
     async register(reqData, res) {
-        const isExist = await userRepo.existUser(reqData.id);
+        const isExist = await userDao.existUser(reqData.id);
 
         if( isExist ) {
             return res.send('이미 사용중인 ID 입니다.');
         }
 
-        const newSeq = await userRepo.nextVal();
+        const newSeq = await userDao.nextVal();
 
-        const result = await userRepo.createUser(reqData, newSeq);
+        const result = await userDao.createUser(reqData, newSeq);
+
+        logger.log(`${reqData.id} user insert query result = ${result.affectedRows} / ${result.warningStatus}`)
 
         res.send('계정 생성 성공');
+    },
+
+    async login(reqData, res) {
+        const user = await userDao.getUser(reqData);
+
+        res.send(user.getUid());
     }
 }
 

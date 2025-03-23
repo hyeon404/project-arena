@@ -10,4 +10,8 @@ router.post('/register', validateBody(registerSchema), (req, res) => {
     auth.register(req.body, res);
 });
 
+router.post('/login', validateBody(registerSchema), (req, res) => {
+    auth.login(req.body, res);
+})
+
 module.exports = router;
