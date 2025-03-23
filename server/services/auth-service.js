@@ -21,7 +21,7 @@ const authService = {
     async login(reqData, res) {
         const user = await userDao.getUser(reqData);
 
-        res.send(user.getUid());
+        res.json(user.toLoginJson());
     }
 }
 
