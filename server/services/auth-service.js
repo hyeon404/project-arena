@@ -1,6 +1,6 @@
-const userRepo = require('../repositories/userRepo')
+const userRepo = require('../databases/daos/user-dao')
 
-const auth = {
+const authService = {
     async register(reqData, res) {
         const isExist = await userRepo.existUser(reqData.id);
 
@@ -8,10 +8,12 @@ const auth = {
             return res.send('이미 사용중인 ID 입니다.');
         }
 
-        //
+        const newSeq = await userRepo.nextVal();
+
+        const result = await userRepo.createUser(reqData, newSeq);
 
         res.send('계정 생성 성공');
     }
 }
 
-module.exports = auth;
+module.exports = authService;
