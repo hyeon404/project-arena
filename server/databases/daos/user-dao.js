@@ -1,7 +1,7 @@
 const db = require('../query-templates/maria-query-template')
 const logger = require('../../utils/logger')
 
-const userDto = require('../../models/dtos/user-dto')
+const UserDto = require('../../models/dtos/user-dto')
 
 const userDao = {
     async existUser(id) {
@@ -19,9 +19,9 @@ const userDao = {
 
     async getUser({id, password}) {
         const query = "SELECT UID FROM USER WHERE ID=? AND PASSWORD=?";
-        return new userDto(await db.selectOne(query, id, password));
+        return new UserDto(await db.selectOne(query, id, password));
     }
 }
 
 
-module.exports = userDao
+module.exports = userDao;
