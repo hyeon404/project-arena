@@ -1,8 +1,7 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
-
-const auth = require('./routers/auth-router');
+const routerConfig = require('./router-config')
 
 const corsOptions = {
     origin: 'http://localhost:3000',
@@ -12,6 +11,6 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 
-app.use('/auth', auth);
+routerConfig(app);
 
 module.exports = app;
