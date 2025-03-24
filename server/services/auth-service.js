@@ -19,9 +19,14 @@ const authService = {
     },
 
     async login(reqData, res) {
-        const user = await userDao.getUser(reqData);
+        try {
+            const user = await userDao.getUser(reqData);
 
-        res.json(user.toLoginJson());
+            res.json(user.toLoginJson());
+        } catch (err) {
+            err.message = "유저 정보가 없습니다.";
+            throw err;
+        }
     }
 }
 

@@ -15,7 +15,7 @@ routerConfig(app);
 
 app.use((err, req, res, next) => {
     console.error('!Unhandled error occured', err.stack);
-    res.status(err.status || 500).json({message: 'Internal Server Error'});
+    res.status(err.status || 500).send({message: err.message || 'Internal error'});
 })
 
 module.exports = app;
