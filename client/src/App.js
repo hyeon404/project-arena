@@ -4,7 +4,7 @@ import './App.css';
 
 function App() {
     const [currentView, setCurrentView] = useState('auth');
-    const backgroundImageUrl = '/assets/background.webp'; // public 폴더 기준 경로
+    const backgroundImageUrl = '/assets/background.webp';
 
     return (
         <div className="App">
