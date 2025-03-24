@@ -1,6 +1,6 @@
 import styles from './Modal.module.css'
 
-function Modal({ isOpen, message, onClose }) {
+export default function Modal({ isOpen, message, onClose }) {
     return (
         <>
         {
@@ -15,5 +15,3 @@ function Modal({ isOpen, message, onClose }) {
         </>
     );
 }
-
-export default Modal;

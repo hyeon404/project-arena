@@ -8,7 +8,7 @@ const API = {
     login: '/auth/login',
 };
 
-export default function AuthView() {
+export default function AuthView({onLoginSuccess}) {
     const [id, setId] = useState('');
     const [pw, setPw] = useState('');
     const [error, setError] = useState('');
@@ -37,6 +37,8 @@ export default function AuthView() {
                 }
             }).then(res => {
                 showModal(`환영합니다.\n${res.data.uid} 님`)
+                sessionStorage.setItem('uid', res.data.uid);
+                onLoginSuccess();
             }).catch((e) => {
                 showModal(e.response.data.message || e.message);
             })
@@ -55,12 +57,13 @@ export default function AuthView() {
                     'Content-Type': 'application/json'
                 }
             }).then(res => {
-                console.log(res);
+                showModal('가입되었습니다.\n로그인을 진행 해 주세요.');
             }).catch(e => {
-                console.log(e)
+                showModal(e.response.data.message || e.message);
             })
         } catch (err) {
-            setError('회원가입 실패. 다시 시도해주세요.');
+            setError('회원 가입 실패. 다시 시도 해 주세요.');
+            showModal(err.message);
         }
     };
 

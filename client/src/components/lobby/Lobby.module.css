@@ -1,0 +1,18 @@
+.heroIcon {
+    position: fixed;
+    top: 100px;
+    left: 100px;
+    width: 100px;
+    height: 100px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.heroIcon:hover {
+    position: fixed;
+    scale: 110%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}

@@ -1,27 +1,19 @@
 import React, {useState} from 'react';
-import AuthView from './components/auth/AuthView.js';
 import './App.css';
+import AuthView from './components/auth/AuthView.js';
+import LobbyView from "./components/lobby/LobbyView";
 
-function App() {
+export default function App() {
     const [currentView, setCurrentView] = useState('auth');
-    const backgroundImageUrl = '/assets/background.webp';
+
+    const handleLoginSuccess = () => {
+        setCurrentView('lobby');
+    }
 
     return (
-        <div className="App">
-            <div
-                style={{
-                    width: '100vw',
-                    height: '100vh',
-                    backgroundImage: `url(${backgroundImageUrl})`,
-                    backgroundSize: 'cover',          // 화면에 맞게 꽉 채움 (비율 유지)
-                    backgroundPosition: 'center',     // 가운데 정렬
-                    backgroundRepeat: 'no-repeat'     // 반복 금지
-                }}
-            >
-                <AuthView/>
-            </div>
+        <div className="App" style={{backgroundImage: `url("/assets/background.webp")`}}>
+            {currentView === 'auth' && <AuthView onLoginSuccess={handleLoginSuccess} />}
+            {currentView === 'lobby' && <LobbyView/>}
         </div>
     )
 }
-
-export default App;
