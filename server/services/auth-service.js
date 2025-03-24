@@ -3,6 +3,7 @@ const userDao = require('../databases/daos/user-dao')
 
 const authService = {
     async register(reqData, res) {
+        // TODO 패스워드 암호화 기능 추가, 기능 토글 추가
         const isExist = await userDao.existUser(reqData.id);
 
         if( isExist ) {
@@ -19,6 +20,7 @@ const authService = {
     },
 
     async login(reqData, res) {
+        // TODO 토큰 발행기능 추가, 기능 토글 추가
         try {
             const user = await userDao.getUser(reqData);
 
