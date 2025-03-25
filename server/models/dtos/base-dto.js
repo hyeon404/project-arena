@@ -1,5 +1,9 @@
+const ResultCode = require('../../common/result-code');
+const AppError = require('../../utils/app-error');
+
 class BaseDTO {
     constructor(dbRow, fields) {
+        if( !dbRow ) throw new AppError(ResultCode.NOT_FOUND_DATA);
         for( const [key, value] of Object.entries(dbRow) ) {
             const normalizedKey = key.toLowerCase().replace(/_([a-z])/g, (_, c) => c.toUpperCase());
             if( fields.includes(normalizedKey) ) {

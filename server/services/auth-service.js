@@ -1,5 +1,8 @@
 const logger = require('../utils/logger');
 const userDao = require('../databases/daos/user-dao')
+const response = require('../common/response');
+const ResultCode = require("../common/result-code");
+const AppError = require("../utils/app-error");
 
 const authService = {
     async register(reqData, res) {
@@ -7,16 +10,15 @@ const authService = {
         const isExist = await userDao.existUser(reqData.id);
 
         if( isExist ) {
-            return res.send('이미 사용중인 ID 입니다.');
+            return res.json(response(ResultCode.ALREADY_USE_ID));
         }
 
         const newSeq = await userDao.nextVal();
-
         const result = await userDao.createUser(reqData, newSeq);
 
         logger.log(`${reqData.id} user insert query result = ${result.affectedRows} / ${result.warningStatus}`)
 
-        res.send('계정 생성 성공');
+        res.json(response(ResultCode.OK));
     },
 
     async login(reqData, res) {
@@ -24,9 +26,11 @@ const authService = {
         try {
             const user = await userDao.getUser(reqData);
 
-            res.json(user.toLoginJson());
+            res.json(response(ResultCode.OK, user.toLoginJson()));
         } catch (err) {
-            err.message = "유저 정보가 없습니다.";
+            if( err instanceof AppError ) {
+                return res.json(response(ResultCode.NOT_FOUND_USER));
+            }
             throw err;
         }
     }

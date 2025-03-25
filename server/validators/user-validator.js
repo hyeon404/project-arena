@@ -7,11 +7,11 @@ const passwordComplexity = (value, helpers) => {
 
     const conditionsMet = [hasAlphabet, hasNumber, hasSpecial].filter(Boolean).length;
     if( conditionsMet < 2 ) {
-        return helpers.message('비밀번호는 영문, 숫자, 특수문자 중 2가지 이상을 포함해야 합니다.')
+        return helpers.error('custom.type');
     }
 
     if( /(.)\1{2,}/.test(value) ) {
-        return helpers.message('같은 문자를 3번 이상 반복할 수 없습니다.')
+        return helpers.error('custom.sameLetter');
     }
 
     return value;
@@ -21,11 +21,9 @@ exports.registerSchema = joi.object({
     id: joi.string()
         .pattern(/^[a-zA-Z0-9]/)
         .min(4).max(20)
-        .required()
-        .messages({}),
+        .required(),
     password: joi.string()
         .min(8).max(32)
         .custom(passwordComplexity)
         .required()
-        .messages({})
 });

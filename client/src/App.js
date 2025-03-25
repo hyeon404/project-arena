@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import './App.css';
 import AuthView from './components/auth/AuthView.js';
 import LobbyView from "./components/lobby/LobbyView";
+import Modal from "./components/modal/Modal";
 
 export default function App() {
     const [currentView, setCurrentView] = useState('auth');
@@ -11,10 +12,14 @@ export default function App() {
     }
 
     return (
-        <div className="App" style={{backgroundImage: `url("/assets/background.webp")`}}>
-            {currentView === 'auth' && <AuthView onLoginSuccess={handleLoginSuccess} />}
-            {currentView === 'lobby' && <LobbyView/>}
-            // TODO HeroView, BattleLobbyView, BattleView 추가 필요
-        </div>
+        <>
+            <div className="App" style={{backgroundImage: `url("/assets/background.webp")`}}>
+                {currentView === 'auth' && <AuthView onLoginSuccess={handleLoginSuccess} />}
+                {currentView === 'lobby' && <LobbyView/>}
+                // TODO HeroView, BattleLobbyView, BattleView 추가 필요
+            </div>
+
+            <Modal/>
+        </>
     )
 }
