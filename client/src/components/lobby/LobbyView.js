@@ -5,9 +5,10 @@ import styles from './Lobby.module.css'
 
 export default function LobbyView() {
     return (
-        <div className={styles.heroIcon}
-        style={{
-            backgroundImage: `url('/assets/heroIcon.webp')`,
-        }}></div>
+        <div className={styles.lobby_container}>
+            <button className={styles.hero_icon} onClick={() => console.log('clicked')}>
+                <img src={`/assets/icon.webp`} alt=''/>
+            </button>
+        </div>
     );
 }
