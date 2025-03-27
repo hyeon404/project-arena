@@ -1,7 +1,6 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import styles from './AuthView.module.css';
-import axios from "axios";
-import {showModal} from '../../utils/ModalUtil'
+import {showModal, isModalOpen} from '../../utils/ModalUtil'
 
 import axiosUtil from '../../utils/AxiosUtil';
 
@@ -13,7 +12,6 @@ const API = {
 export default function AuthView({onLoginSuccess}) {
     const [id, setId] = useState('');
     const [pw, setPw] = useState('');
-    const [error, setError] = useState('');
 
     const handleLogin = async () => {
         try {
@@ -37,8 +35,19 @@ export default function AuthView({onLoginSuccess}) {
         } catch (err) {
             showModal(err.message);
         }
-
     };
+
+    useEffect(() => {
+        const handleKeyDown = (e) => {
+            if( e.key === 'Enter' && !isModalOpen() ) {
+                handleLogin();
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [id, pw]);
+
 
     return (
         <div className={styles.login_container}>
@@ -64,8 +73,6 @@ export default function AuthView({onLoginSuccess}) {
                         className={styles.input}
                     />
                 </div>
-
-                {error && <div className={styles.error}>{error}</div>}
 
                 <div className={styles.button_row}>
                     <button onClick={handleLogin}>로그인</button>

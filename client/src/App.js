@@ -16,7 +16,7 @@ export default function App() {
             <div className="App" style={{backgroundImage: `url("/assets/background.webp")`}}>
                 {currentView === 'auth' && <AuthView onLoginSuccess={handleLoginSuccess} />}
                 {currentView === 'lobby' && <LobbyView/>}
-                // TODO HeroView, BattleLobbyView, BattleView 추가 필요
+                {/*TODO HeroView, BattleLobbyView, BattleView 추가 필요*/}
             </div>
 
             <Modal/>

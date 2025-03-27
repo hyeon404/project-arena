@@ -12,8 +12,7 @@ const api = axios.create({
 api.interceptors.response.use(
     (response) => {
         if( response.data.code !== '0000' ) {
-            console.log(response.data.message);
-            showModal(response.data.message );
+            showModal(response.data.message);
         }
         return response.data;
     },

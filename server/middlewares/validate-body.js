@@ -6,12 +6,14 @@ module.exports = (schema) => {
         const {error} = schema.validate(body);
         if( error ) {
             const [detail] = error.details;
+
             switch(detail.path[0]) {
                 case 'id':
                     switch(detail.type) {
                         case 'string.min':
                         case 'string.max':
                             return res.json(response(ResultCode.ID_LENGTH));
+                        case 'string.empty':
                         case 'any.required':
                             return res.json(response(ResultCode.ID_REQUIRED))
                     }
@@ -21,6 +23,7 @@ module.exports = (schema) => {
                         case 'string.min':
                         case 'string.max':
                             return res.json(response(ResultCode.PW_LENGTH));
+                        case 'string.empty':
                         case 'any.required':
                             return res.json(response(ResultCode.PW_REQUIRED));
                         case 'custom.type':

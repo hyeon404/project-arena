@@ -12,8 +12,22 @@ export default function Modal() {
             setMessage(msg);
             setVisible(true);
             setCallback(() => cb);
-        });
-    });
+        }, setVisible)
+
+        const handleKeyDown = (e) => {
+            if( e.key === 'Enter' ) {
+                e.preventDefault();
+                e.stopPropagation();
+                closeHandle();
+            }
+        }
+
+        window.addEventListener('keydown', handleKeyDown);
+
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+        }
+    }, [visible]);
 
     const closeHandle = () => {
         if( callback ) callback();
