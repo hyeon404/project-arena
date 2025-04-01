@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
-const routerConfig = require('./router-config')
+const routerConfig = require('./src/configs/router-config')
 
 const corsOptions = {
     origin: 'http://localhost:3000',
